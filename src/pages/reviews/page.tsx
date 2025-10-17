@@ -43,7 +43,7 @@ export default function ReviewsPage() {
     try {
       const token = await user.getIdToken();
       const response = await fetch(
-        `https://api.task-et.com/api/reviews?user_id=${user.uid}`,
+        `${import.meta.env.VITE_API_URL}/api/reviews?user_id=${user.uid}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

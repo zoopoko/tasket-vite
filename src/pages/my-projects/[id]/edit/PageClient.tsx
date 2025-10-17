@@ -53,7 +53,7 @@ export default function ProjectEditPage() {
     try {
       const token = await user.getIdToken();
 
-      const response = await fetch(`https://api.task-et.com/api/projects/${projectId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/projects/${projectId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -120,7 +120,7 @@ export default function ProjectEditPage() {
     try {
       const token = await user.getIdToken();
 
-      const response = await fetch(`https://api.task-et.com/api/projects/${projectId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/projects/${projectId}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,

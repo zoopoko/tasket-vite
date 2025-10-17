@@ -54,7 +54,7 @@ export default function ProfilePage() {
     try {
       const token = await user.getIdToken();
 
-      const response = await fetch(`https://api.task-et.com/api/users/me`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -99,7 +99,7 @@ export default function ProfilePage() {
     try {
       const token = await user.getIdToken();
 
-      const response = await fetch(`https://api.task-et.com/api/users/me`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/me`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,

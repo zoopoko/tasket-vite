@@ -52,7 +52,7 @@ export default function DepositPaymentPage() {
       const token = await user.getIdToken();
 
       // 案件情報を取得
-      const projectRes = await fetch(`https://api.task-et.com/api/projects/${projectId}`, {
+      const projectRes = await fetch(`${import.meta.env.VITE_API_URL}/api/projects/${projectId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -66,7 +66,7 @@ export default function DepositPaymentPage() {
       setProject(projectData.project);
 
       // 承認済み提案を取得
-      const proposalsRes = await fetch(`https://api.task-et.com/api/proposals?project_id=${projectId}`, {
+      const proposalsRes = await fetch(`${import.meta.env.VITE_API_URL}/api/proposals?project_id=${projectId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -110,7 +110,7 @@ export default function DepositPaymentPage() {
 
       // TODO: 本番環境ではStripe Elements統合
       // 現在はモック決済処理
-      const response = await fetch(`https://api.task-et.com/api/projects/${projectId}/accept-proposal`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/projects/${projectId}/accept-proposal`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -66,7 +66,7 @@ export default function FinalPaymentPage() {
       const token = await user.getIdToken();
 
       // 案件情報を取得
-      const projectRes = await fetch(`https://api.task-et.com/api/projects/${projectId}`, {
+      const projectRes = await fetch(`${import.meta.env.VITE_API_URL}/api/projects/${projectId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -86,7 +86,7 @@ export default function FinalPaymentPage() {
       }
 
       // 承認済み提案を取得
-      const proposalsRes = await fetch(`https://api.task-et.com/api/proposals?project_id=${projectId}`, {
+      const proposalsRes = await fetch(`${import.meta.env.VITE_API_URL}/api/proposals?project_id=${projectId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -107,7 +107,7 @@ export default function FinalPaymentPage() {
       setProposal(acceptedProposal);
 
       // 決済履歴を取得
-      const paymentsRes = await fetch(`https://api.task-et.com/api/payments?project_id=${projectId}`, {
+      const paymentsRes = await fetch(`${import.meta.env.VITE_API_URL}/api/payments?project_id=${projectId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -147,7 +147,7 @@ export default function FinalPaymentPage() {
       const token = await user.getIdToken();
 
       // 案件完了エンドポイントを呼び出し（完了金の決済も含む）
-      const response = await fetch(`https://api.task-et.com/api/projects/${projectId}/complete`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/projects/${projectId}/complete`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

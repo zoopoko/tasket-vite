@@ -51,7 +51,7 @@ export default function SignupPage() {
 
       // データベースにユーザー情報を保存
       const token = await userCredential.user.getIdToken();
-      const response = await fetch('https://api.task-et.com/api/users/me', {
+      const response = await fetch('${import.meta.env.VITE_API_URL}/api/users/me', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

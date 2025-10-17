@@ -50,7 +50,7 @@ export default function ProjectDetailPage() {
         // TODO: 認証実装後にトークンを使用
         // const token = await user?.getIdToken();
 
-        const response = await fetch(`https://api.task-et.com/api/projects/${projectId}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/projects/${projectId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ export default function ProjectDetailPage() {
         throw new Error('認証が必要です');
       }
 
-      const response = await fetch('https://api.task-et.com/api/proposals', {
+      const response = await fetch('${import.meta.env.VITE_API_URL}/api/proposals', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

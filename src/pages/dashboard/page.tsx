@@ -47,7 +47,7 @@ export default function DashboardPage() {
 
       // プロジェクト統計を取得
       const projectsResponse = await fetch(
-        `https://api.task-et.com/api/projects/stats`,
+        `${import.meta.env.VITE_API_URL}/api/projects/stats`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -67,7 +67,7 @@ export default function DashboardPage() {
 
       // レビュー統計を取得
       const reviewsResponse = await fetch(
-        `https://api.task-et.com/api/reviews?user_id=${user.uid}`,
+        `${import.meta.env.VITE_API_URL}/api/reviews?user_id=${user.uid}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

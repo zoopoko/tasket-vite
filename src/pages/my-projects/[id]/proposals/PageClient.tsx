@@ -39,7 +39,7 @@ export default function ProjectProposalsPage() {
       try {
         const token = await user?.getIdToken();
 
-        const response = await fetch(`https://api.task-et.com/api/proposals?project_id=${projectId}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/proposals?project_id=${projectId}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -72,7 +72,7 @@ export default function ProjectProposalsPage() {
     try {
       const token = await user?.getIdToken();
 
-      const response = await fetch(`https://api.task-et.com/api/proposals/${proposalId}/accept`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/proposals/${proposalId}/accept`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -87,7 +87,7 @@ export default function ProjectProposalsPage() {
       alert('提案を承認しました！');
 
       // 提案リストを再取得
-      const proposalsResponse = await fetch(`https://api.task-et.com/api/proposals?project_id=${projectId}`, {
+      const proposalsResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/proposals?project_id=${projectId}`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -114,7 +114,7 @@ export default function ProjectProposalsPage() {
     try {
       const token = await user?.getIdToken();
 
-      const response = await fetch(`https://api.task-et.com/api/proposals/${proposalId}/reject`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/proposals/${proposalId}/reject`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -129,7 +129,7 @@ export default function ProjectProposalsPage() {
       alert('提案を却下しました');
 
       // 提案リストを再取得
-      const proposalsResponse = await fetch(`https://api.task-et.com/api/proposals?project_id=${projectId}`, {
+      const proposalsResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/proposals?project_id=${projectId}`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,

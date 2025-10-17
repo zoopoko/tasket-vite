@@ -113,7 +113,7 @@ export default function ProjectChatPage() {
         const formData = new FormData();
         formData.append('file', uploadedFile);
 
-        const uploadResponse = await fetch('https://api.task-et.com/api/upload', {
+        const uploadResponse = await fetch('${import.meta.env.VITE_API_URL}/api/upload', {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -134,7 +134,7 @@ export default function ProjectChatPage() {
         setUploading(false);
       }
 
-      const response = await fetch('https://api.task-et.com/api/messages', {
+      const response = await fetch('${import.meta.env.VITE_API_URL}/api/messages', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

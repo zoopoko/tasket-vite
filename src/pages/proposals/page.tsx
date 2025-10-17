@@ -48,7 +48,7 @@ export default function ProposalsPage() {
     try {
       const token = await user.getIdToken();
 
-      const response = await fetch(`https://api.task-et.com/api/proposals/my-proposals`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/proposals/my-proposals`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

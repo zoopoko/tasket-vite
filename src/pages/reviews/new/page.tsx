@@ -46,7 +46,7 @@ function NewReviewPageContent() {
 
     try {
       const token = await user.getIdToken();
-      const response = await fetch('https://api.task-et.com/api/reviews', {
+      const response = await fetch('${import.meta.env.VITE_API_URL}/api/reviews', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

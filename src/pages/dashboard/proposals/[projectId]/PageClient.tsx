@@ -50,7 +50,7 @@ export default function ProposalsPage() {
         if (!token) return;
 
         // 案件情報を取得
-        const projectRes = await fetch(`https://api.task-et.com/api/projects/${projectId}`, {
+        const projectRes = await fetch(`${import.meta.env.VITE_API_URL}/api/projects/${projectId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
@@ -63,7 +63,7 @@ export default function ProposalsPage() {
         setProject(projectData.project);
 
         // 提案一覧を取得
-        const proposalsRes = await fetch(`https://api.task-et.com/api/proposals?project_id=${projectId}`, {
+        const proposalsRes = await fetch(`${import.meta.env.VITE_API_URL}/api/proposals?project_id=${projectId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -104,7 +104,7 @@ export default function ProposalsPage() {
         throw new Error('認証が必要です');
       }
 
-      const response = await fetch(`https://api.task-et.com/api/proposals/${proposalId}/accept`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/proposals/${proposalId}/accept`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -119,7 +119,7 @@ export default function ProposalsPage() {
       alert('提案を承認しました！');
 
       // 提案一覧を再取得
-      const proposalsRes = await fetch(`https://api.task-et.com/api/proposals?project_id=${projectId}`, {
+      const proposalsRes = await fetch(`${import.meta.env.VITE_API_URL}/api/proposals?project_id=${projectId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -153,7 +153,7 @@ export default function ProposalsPage() {
         throw new Error('認証が必要です');
       }
 
-      const response = await fetch(`https://api.task-et.com/api/proposals/${proposalId}/reject`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/proposals/${proposalId}/reject`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -168,7 +168,7 @@ export default function ProposalsPage() {
       alert('提案を拒否しました');
 
       // 提案一覧を再取得
-      const proposalsRes = await fetch(`https://api.task-et.com/api/proposals?project_id=${projectId}`, {
+      const proposalsRes = await fetch(`${import.meta.env.VITE_API_URL}/api/proposals?project_id=${projectId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

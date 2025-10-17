@@ -48,7 +48,7 @@ export default function ChatPage() {
     const fetchData = async () => {
       try {
         // 案件情報を取得
-        const projectRes = await fetch(`https://api.task-et.com/api/projects/${projectId}`, {
+        const projectRes = await fetch(`${import.meta.env.VITE_API_URL}/api/projects/${projectId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
@@ -80,7 +80,7 @@ export default function ChatPage() {
       const token = await user?.getIdToken();
       if (!token) return;
 
-      const messagesRes = await fetch(`https://api.task-et.com/api/messages?project_id=${projectId}`, {
+      const messagesRes = await fetch(`${import.meta.env.VITE_API_URL}/api/messages?project_id=${projectId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -127,7 +127,7 @@ export default function ChatPage() {
         throw new Error('認証が必要です');
       }
 
-      const response = await fetch('https://api.task-et.com/api/messages', {
+      const response = await fetch('${import.meta.env.VITE_API_URL}/api/messages', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

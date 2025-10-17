@@ -36,7 +36,7 @@ function ReviewRequirementsPageContent() {
     try {
       const token = await user.getIdToken();
       const response = await fetch(
-        'https://api.task-et.com/api/ai/generate-requirements',
+        '${import.meta.env.VITE_API_URL}/api/ai/generate-requirements',
         {
           method: 'POST',
           headers: {
@@ -83,7 +83,7 @@ function ReviewRequirementsPageContent() {
     try {
       const token = await user.getIdToken();
 
-      const response = await fetch('https://api.task-et.com/api/projects', {
+      const response = await fetch('${import.meta.env.VITE_API_URL}/api/projects', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -80,7 +80,7 @@ export default function ContractPage() {
         const token = await user?.getIdToken();
         if (!token) return;
 
-        const response = await fetch(`https://api.task-et.com/api/contracts/${contractId}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/contracts/${contractId}`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
@@ -116,7 +116,7 @@ export default function ContractPage() {
       const token = await user?.getIdToken();
       if (!token) throw new Error('認証が必要です');
 
-      const response = await fetch(`https://api.task-et.com/api/contracts/${contractId}/publish`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/contracts/${contractId}/publish`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -147,7 +147,7 @@ export default function ContractPage() {
       const token = await user?.getIdToken();
       if (!token) throw new Error('認証が必要です');
 
-      const response = await fetch(`https://api.task-et.com/api/contracts/${contractId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/contracts/${contractId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -182,7 +182,7 @@ export default function ContractPage() {
       const token = await user?.getIdToken();
       if (!token) throw new Error('認証が必要です');
 
-      const response = await fetch(`https://api.task-et.com/api/contracts/${contractId}/submit`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/contracts/${contractId}/submit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -213,7 +213,7 @@ export default function ContractPage() {
       const token = await user?.getIdToken();
       if (!token) throw new Error('認証が必要です');
 
-      const response = await fetch(`https://api.task-et.com/api/contracts/${contractId}/approve`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/contracts/${contractId}/approve`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

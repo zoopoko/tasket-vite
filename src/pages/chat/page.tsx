@@ -47,7 +47,7 @@ export default function ChatListPage() {
       const token = await user.getIdToken();
 
       // チャット可能な案件一覧を取得
-      const response = await fetch(`https://api.task-et.com/api/projects/my-chats`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/projects/my-chats`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
