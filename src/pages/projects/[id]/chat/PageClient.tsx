@@ -262,7 +262,7 @@ export default function ProjectChatPage() {
                   </p>
                   {message.attachment_url && (
                     <div className="mt-2">
-                      <Link
+                      <a
                         href={message.attachment_url}
                         target="_blank"
                         rel="noopener noreferrer"
