@@ -1,6 +1,7 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { AuthProvider } from '@/lib/auth-context';
 import { NotificationProvider } from '@/lib/notification-context';
+import MainLayout from '@/components/MainLayout';
 
 // Auth pages
 import LoginPage from '@/pages/auth/login/page';
@@ -30,6 +31,12 @@ import NotificationsPage from '@/pages/notifications/page';
 import ProfilePage from '@/pages/profile/page';
 import AdminPage from '@/pages/admin/page';
 
+// Additional pages
+import ChatsListPage from '@/pages/chat/page';
+import ProposalsListPage from '@/pages/proposals/page';
+import ReviewsListPage from '@/pages/reviews/page';
+import NewReviewPage from '@/pages/reviews/new/page';
+
 // 404 Page
 const NotFoundPage = () => (
   <div className="flex min-h-screen items-center justify-center">
@@ -47,13 +54,13 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <NotificationProvider>
-          <Routes>
-            {/* Auth routes */}
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
+        <Routes>
+          {/* Auth routes (without MainLayout) */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
 
-            {/* Main routes */}
+          {/* Main routes (with MainLayout) */}
+          <Route element={<MainLayout><Outlet /></MainLayout>}>
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="/dashboard" element={<DashboardPage />} />
 
@@ -81,6 +88,12 @@ function App() {
             <Route path="/my-projects/:id/edit" element={<MyProjectEditPage />} />
             <Route path="/my-projects/:id/proposals" element={<MyProjectProposalsPage />} />
 
+            {/* Chats, Proposals, Reviews */}
+            <Route path="/chats" element={<ChatsListPage />} />
+            <Route path="/proposals" element={<ProposalsListPage />} />
+            <Route path="/reviews" element={<ReviewsListPage />} />
+            <Route path="/reviews/new" element={<NewReviewPage />} />
+
             {/* Other pages */}
             <Route path="/notifications" element={<NotificationsPage />} />
             <Route path="/profile" element={<ProfilePage />} />
@@ -88,8 +101,8 @@ function App() {
 
             {/* 404 */}
             <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </NotificationProvider>
+          </Route>
+        </Routes>
       </AuthProvider>
     </BrowserRouter>
   );

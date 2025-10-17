@@ -20,7 +20,7 @@ export default function Sidebar() {
     { name: 'ダッシュボード', href: '/dashboard', icon: '📊' },
     { name: '案件一覧', href: '/projects', icon: '📋' },
     { name: '案件作成', href: '/projects/new', icon: '➕' },
-    { name: 'チャット', href: '/chat', icon: '💬' },
+    { name: 'チャット', href: '/chats', icon: '💬' },
     { name: '提案管理', href: '/proposals', icon: '📝' },
     { name: '通知', href: '/notifications', icon: '🔔', badge: unreadCount },
     { name: 'レビュー', href: '/reviews', icon: '⭐' },
