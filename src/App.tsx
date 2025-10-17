@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { AuthProvider } from '@/lib/auth-context';
-import { NotificationProvider } from '@/lib/notification-context';
 import MainLayout from '@/components/MainLayout';
 
 // Auth pages
