@@ -3,7 +3,7 @@
  * 通知コンテキスト
  * アプリ内通知の状態管理
  */
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { useAuth } from './auth-context';
 
 interface Notification {

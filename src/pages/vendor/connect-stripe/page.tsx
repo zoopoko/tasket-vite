@@ -5,7 +5,7 @@
  */
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/auth-context';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function ConnectStripePage() {
   const { user, loading } = useAuth();

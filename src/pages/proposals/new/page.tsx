@@ -5,7 +5,7 @@
  */
 import { useState, useEffect, Suspense } from 'react';
 import { useAuth } from '@/lib/auth-context';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -32,7 +32,6 @@ function NewProposalPageContent() {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm<ProposalFormData>({
     resolver: zodResolver(proposalSchema),
   });
@@ -107,7 +106,7 @@ function NewProposalPageContent() {
         throw new Error('提案の送信に失敗しました');
       }
 
-      const result = await response.json();
+      
 
       alert('提案を送信しました！');
       navigate('/dashboard');

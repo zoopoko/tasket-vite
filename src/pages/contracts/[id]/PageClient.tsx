@@ -5,7 +5,7 @@
  */
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/auth-context';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { downloadContractPDF } from '@/lib/generate-contract-pdf';
 
 interface ContractContent {

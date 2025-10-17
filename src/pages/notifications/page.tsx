@@ -5,7 +5,7 @@
 import { useEffect } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { useNotifications } from '@/lib/notification-context';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function NotificationsPage() {
   const { user, loading: authLoading } = useAuth();

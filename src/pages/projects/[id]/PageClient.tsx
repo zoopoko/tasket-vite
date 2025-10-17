@@ -5,7 +5,7 @@
  */
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/auth-context';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 
 interface Project {
   id: string;
@@ -120,7 +120,7 @@ export default function ProjectDetailPage() {
         throw new Error('提案の送信に失敗しました');
       }
 
-      const result = await response.json();
+      
       alert('提案を送信しました！クライアントからの返信をお待ちください。');
 
       // フォームをリセット

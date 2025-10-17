@@ -5,7 +5,7 @@
  */
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/auth-context';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';

@@ -23,9 +23,6 @@ import ChatPage from '@/pages/chat/[projectId]/ChatPageClient';
 import ContractPage from '@/pages/contracts/[id]/PageClient';
 
 import ProposalsPage from '@/pages/dashboard/proposals/[projectId]/PageClient';
-import ChatsPage from '@/pages/dashboard/chats/page';
-
-import MyProjectsPage from '@/pages/my-projects/page';
 import MyProjectEditPage from '@/pages/my-projects/[id]/edit/PageClient';
 import MyProjectProposalsPage from '@/pages/my-projects/[id]/proposals/PageClient';
 
@@ -79,10 +76,8 @@ function App() {
 
             {/* Dashboard sub-pages */}
             <Route path="/dashboard/proposals/:projectId" element={<ProposalsPage />} />
-            <Route path="/dashboard/chats" element={<ChatsPage />} />
 
             {/* My Projects */}
-            <Route path="/my-projects" element={<MyProjectsPage />} />
             <Route path="/my-projects/:id/edit" element={<MyProjectEditPage />} />
             <Route path="/my-projects/:id/proposals" element={<MyProjectProposalsPage />} />
 

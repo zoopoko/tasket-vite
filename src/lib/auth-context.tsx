@@ -4,7 +4,7 @@
  * ユーザーの認証状態を管理
  */
 import { createContext, useContext, useEffect, useState } from 'react';
-import { User, onAuthStateChanged, signOut as firebaseSignOut } from 'firebase/auth';
+import { type User, onAuthStateChanged, signOut as firebaseSignOut } from 'firebase/auth';
 import { auth } from './firebase';
 
 interface AuthContextType {
