@@ -2,9 +2,9 @@
 /**
  * ログインページ
  */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { signInWithEmailAndPassword, signInWithRedirect, getRedirectResult, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -45,18 +45,36 @@ export default function LoginPage() {
     }
   };
 
+  // リダイレクト後の結果を処理
+  useEffect(() => {
+    const handleRedirectResult = async () => {
+      try {
+        const result = await getRedirectResult(auth);
+        if (result) {
+          // リダイレクト認証成功
+          navigate('/dashboard');
+        }
+      } catch (err: any) {
+        console.error('Redirect result error:', err);
+        setError('Googleログインに失敗しました。');
+      }
+    };
+
+    handleRedirectResult();
+  }, [navigate]);
+
   const handleGoogleSignIn = async () => {
     setLoading(true);
     setError('');
 
     try {
       const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-      navigate('/dashboard');
+      // ポップアップではなくリダイレクトを使用
+      await signInWithRedirect(auth, provider);
+      // リダイレクトされるので、ここには到達しない
     } catch (err: any) {
       console.error('Google sign in error:', err);
       setError('Googleログインに失敗しました。');
-    } finally {
       setLoading(false);
     }
   };
