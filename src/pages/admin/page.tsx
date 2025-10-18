@@ -39,7 +39,7 @@ export default function AdminDashboard() {
         const token = await user.getIdToken();
 
         // 実際の統計データをAPIから取得
-        const response = await fetch('${import.meta.env.VITE_API_URL}/api/admin/statistics', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/statistics`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

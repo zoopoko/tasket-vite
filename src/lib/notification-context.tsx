@@ -45,6 +45,8 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 
     try {
       const token = await user.getIdToken();
+      console.log('[通知] トークン取得:', token ? `${token.substring(0, 30)}...` : 'なし');
+      console.log('[通知] API URL:', import.meta.env.VITE_API_URL);
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/notifications`, {
         headers: {
           Authorization: `Bearer ${token}`,

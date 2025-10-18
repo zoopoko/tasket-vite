@@ -37,7 +37,7 @@ export default function ProjectsPage() {
         // TODO: 認証実装後にトークンを使用
         // const token = await user?.getIdToken();
 
-        const response = await fetch('${import.meta.env.VITE_API_URL}/api/projects', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/projects`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

@@ -102,7 +102,7 @@ export default function ProjectDetailPage() {
         throw new Error('認証が必要です');
       }
 
-      const response = await fetch('${import.meta.env.VITE_API_URL}/api/proposals', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/proposals`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

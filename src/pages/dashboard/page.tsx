@@ -44,6 +44,8 @@ export default function DashboardPage() {
 
     try {
       const token = await user.getIdToken();
+      console.log('[ダッシュボード] トークン取得:', token ? `${token.substring(0, 30)}...` : 'なし');
+      console.log('[ダッシュボード] ユーザーID:', user.uid);
 
       // プロジェクト統計を取得
       const projectsResponse = await fetch(
