@@ -334,7 +334,7 @@ export default function ProjectChatPage() {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => {
                 // IME入力中（日本語変換中）は無視
-                if (e.isComposing || e.keyCode === 229) return;
+                if (e.nativeEvent.isComposing || e.keyCode === 229) return;
 
                 if (e.key === 'Enter' && !e.shiftKey) {
                   e.preventDefault();
