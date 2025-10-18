@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/lib/auth-context';
 
@@ -40,6 +40,7 @@ export default function NewProjectPage() {
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -191,6 +192,8 @@ export default function NewProjectPage() {
       ]);
     } finally {
       setIsLoading(false);
+      // 送信後、入力欄にフォーカスを戻す
+      setTimeout(() => inputRef.current?.focus(), 0);
     }
   };
 
@@ -296,6 +299,7 @@ export default function NewProjectPage() {
 
               <div className="flex gap-2">
                 <input
+                  ref={inputRef}
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
