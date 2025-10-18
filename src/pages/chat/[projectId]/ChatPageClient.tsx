@@ -127,7 +127,7 @@ export default function ChatPage() {
         throw new Error('認証が必要です');
       }
 
-      const response = await fetch('${import.meta.env.VITE_API_URL}/api/messages', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/messages`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

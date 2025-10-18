@@ -45,7 +45,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 
     try {
       const token = await user.getIdToken();
-      const response = await fetch('http://localhost:8787/api/notifications', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/notifications`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -68,7 +68,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 
     try {
       const token = await user.getIdToken();
-      const response = await fetch(`http://localhost:8787/api/notifications/${notificationId}/read`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/notifications/${notificationId}/read`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -94,7 +94,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 
     try {
       const token = await user.getIdToken();
-      const response = await fetch('http://localhost:8787/api/notifications/read-all', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/notifications/read-all`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
