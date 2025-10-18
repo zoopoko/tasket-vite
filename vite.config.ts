@@ -11,6 +11,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp}'],
+        navigateFallback: '/index.html',
+        navigateFallbackDenylist: [/^\/api/],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/api\.task-et\.com\/.*/i,
