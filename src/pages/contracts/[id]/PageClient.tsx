@@ -3,10 +3,10 @@
  * 契約書詳細ページ
  * クライアントとベンダーが契約書を閲覧・編集・提出・承認するページ
  */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { downloadContractPDF } from '@/lib/generate-contract-pdf';
+import { printContractToPDF } from '@/lib/generate-contract-pdf';
 
 interface ContractContent {
   title: string;
@@ -48,6 +48,7 @@ export default function ContractPage() {
   const navigate = useNavigate();
   const params = useParams();
   const contractId = params.id as string;
+  const contractRef = useRef<HTMLDivElement>(null);
 
   const [contract, setContract] = useState<Contract | null>(null);
   const [loadingData, setLoadingData] = useState(true);
@@ -107,37 +108,10 @@ export default function ContractPage() {
     }
   }, [contractId, user]);
 
-  const handlePublish = async () => {
-    if (!confirm('契約書を公開しますか？公開後、ベンダーが閲覧できるようになります。')) {
-      return;
-    }
-
-    try {
-      const token = await user?.getIdToken();
-      if (!token) throw new Error('認証が必要です');
-
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/contracts/${contractId}/publish`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('契約書の公開に失敗しました');
-      }
-
-      alert('契約書を公開しました');
-      window.location.reload();
-    } catch (err: any) {
-      console.error('Error publishing contract:', err);
-      setError(err.message || '契約書の公開に失敗しました');
-    }
-  };
-
   const handleEdit = () => {
     setIsEditing(true);
+    // 現在の契約内容で編集フォームを初期化
+    setEditedContent(contract?.content || null);
   };
 
   const handleSaveEdit = async () => {
@@ -234,33 +208,10 @@ export default function ContractPage() {
   };
 
   const handleDownloadPDF = () => {
-    if (!contract) return;
+    if (!contract || !contractRef.current) return;
 
-    // 契約書データをPDF生成関数用に変換
-    const pdfData = {
-      id: contract.id,
-      project_id: contract.project_id,
-      title: contract.content.title,
-      description: contract.content.description,
-      budget: contract.content.amount,
-      deadline_days: contract.content.duration_days,
-      client_name: contract.client_info.name,
-      client_email: contract.client_info.email,
-      client_address: contract.client_info.address,
-      client_phone: contract.client_info.phone,
-      vendor_name: contract.vendor_info?.name || '未設定',
-      vendor_email: contract.vendor_info?.email || '未設定',
-      vendor_address: contract.vendor_info?.address,
-      vendor_phone: contract.vendor_info?.phone,
-      terms: contract.content.terms.join('\n'),
-      payment_terms: '着手金30%、完了金70%の分割払い',
-      deliverables: '契約書に記載の業務内容に基づく成果物',
-      status: contract.status,
-      created_at: contract.created_at,
-      signed_at: contract.signed_at || undefined,
-    };
-
-    downloadContractPDF(pdfData);
+    // ブラウザの印刷機能を使用（より安定）
+    printContractToPDF(contractRef.current);
   };
 
   if (loading || loadingData) {
@@ -303,7 +254,7 @@ export default function ContractPage() {
                 className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 flex items-center gap-2"
               >
                 <span>📄</span>
-                PDFダウンロード
+                PDF出力（印刷）
               </button>
               <Link
                 to="/dashboard"
@@ -317,7 +268,7 @@ export default function ContractPage() {
       </header>
 
       {/* メインコンテンツ */}
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8" ref={contractRef}>
         {/* エラー表示 */}
         {error && (
           <div className="mb-6 rounded-lg bg-red-50 p-4 shadow">
@@ -432,32 +383,43 @@ export default function ContractPage() {
 
           {/* 契約条項 */}
           <div className="mb-6">
-            <h3 className="mb-2 font-semibold">契約条項</h3>
-            <div className="space-y-2 rounded-md bg-gray-50 p-4">
-              {contract.content.terms.map((term, index) => (
-                <p key={index} className="text-sm text-gray-700">{term}</p>
-              ))}
+            <h3 className="mb-4 text-lg font-semibold">契約条項</h3>
+            <div className="space-y-4">
+              {isEditing ? (
+                editedContent?.terms.map((term, index) => (
+                  <div key={index} className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+                    <textarea
+                      value={term}
+                      onChange={(e) => {
+                        const newTerms = [...(editedContent?.terms || [])];
+                        newTerms[index] = e.target.value;
+                        setEditedContent(prev => prev ? {...prev, terms: newTerms} : null);
+                      }}
+                      className="w-full rounded-md border border-gray-300 p-2 font-mono text-sm focus:border-blue-500 focus:outline-none"
+                      rows={6}
+                    />
+                  </div>
+                ))
+              ) : (
+                contract.content.terms.map((term, index) => (
+                  <div key={index} className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+                    <p className="whitespace-pre-wrap text-sm leading-relaxed text-gray-700">{term}</p>
+                  </div>
+                ))
+              )}
             </div>
           </div>
 
           {/* アクションボタン */}
           <div className="flex gap-4 border-t pt-6">
-            {/* 下書き状態 - クライアントのみ公開可能 */}
-            {contract.status === 'draft' && isClient && (
-              <>
-                <button
-                  onClick={handleEdit}
-                  className="flex-1 rounded-md bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300"
-                >
-                  編集
-                </button>
-                <button
-                  onClick={handlePublish}
-                  className="flex-1 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-                >
-                  公開
-                </button>
-              </>
+            {/* 下書き状態 - クライアントのみ編集可能 */}
+            {contract.status === 'draft' && isClient && !isEditing && (
+              <button
+                onClick={handleEdit}
+                className="flex-1 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+              >
+                契約書を編集
+              </button>
             )}
 
             {/* 編集中 */}
@@ -473,7 +435,7 @@ export default function ContractPage() {
                   onClick={handleSaveEdit}
                   className="flex-1 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
                 >
-                  保存
+                  更新
                 </button>
               </>
             )}

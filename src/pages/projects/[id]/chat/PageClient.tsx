@@ -46,7 +46,7 @@ export default function ProjectChatPage() {
       try {
         const token = await user?.getIdToken();
 
-        const response = await fetch(`/api/messages?projectId=${projectId}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/messages?project_id=${projectId}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,

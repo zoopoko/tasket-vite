@@ -49,7 +49,7 @@ export default function NewProjectPage() {
   }, [user, loading, navigate]);
 
   // 特定の会話をロード
-  const loadConversation = useCallback(async (id: string) => {
+  const loadConversation = useCallback(async (id: string, fromCancel = false) => {
     if (!user || !id) {
       console.log('[DEBUG] Load conversation skipped - user:', !!user, 'id:', id);
       return;
@@ -87,13 +87,18 @@ export default function NewProjectPage() {
       setConversationId(id);
       setActiveTab('new');
 
-      // 最後のメッセージが「要件が整理できました」を含むかチェック
-      const lastMessage = loadedMessages[loadedMessages.length - 1];
-      if (lastMessage && lastMessage.role === 'assistant') {
-        setIsComplete(
-          lastMessage.content.includes('要件が整理できました') ||
-            lastMessage.content.includes('案件を作成')
-        );
+      // キャンセルから戻ってきた場合は、入力欄を有効化するためにisCompleteをfalseにする
+      if (fromCancel) {
+        setIsComplete(false);
+      } else {
+        // 最後のメッセージが「要件が整理できました」を含むかチェック
+        const lastMessage = loadedMessages[loadedMessages.length - 1];
+        if (lastMessage && lastMessage.role === 'assistant') {
+          setIsComplete(
+            lastMessage.content.includes('要件が整理できました') ||
+              lastMessage.content.includes('案件を作成')
+          );
+        }
       }
     } catch (error) {
       console.error('Error loading conversation:', error);
@@ -136,7 +141,8 @@ export default function NewProjectPage() {
   // キャンセルボタンから戻ってきた場合、会話を復元
   useEffect(() => {
     if (returnedConversationId && user) {
-      loadConversation(returnedConversationId);
+      // fromCancel=true を渡して、入力欄を有効化する
+      loadConversation(returnedConversationId, true);
     }
   }, [returnedConversationId, user, loadConversation]);
 

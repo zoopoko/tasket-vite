@@ -11,6 +11,8 @@ interface Project {
   id: string;
   title: string;
   description: string;
+  requirements?: string; // JSON文字列
+  technologies?: string; // JSON文字列
   budget: number;
   status: string;
   contract_id?: string;
@@ -63,6 +65,8 @@ export default function ProjectDetailPage() {
         }
 
         const data = await response.json();
+        console.log('📋 案件データ取得:', data.project);
+        console.log('📝 契約書ID:', data.project.contract_id);
         setProject(data.project);
       } catch (error) {
         console.error('Project fetch error:', error);
@@ -224,6 +228,141 @@ export default function ProjectDetailPage() {
             <p className="mt-2 whitespace-pre-wrap text-gray-700">{project.description}</p>
           </div>
 
+          {/* 要件定義 */}
+          {project.requirements && (() => {
+            try {
+              const requirements = JSON.parse(project.requirements);
+
+              // 新しい構造化された要件定義形式
+              if (Array.isArray(requirements) && requirements[0]?.category) {
+                return (
+                  <div className="mt-8 border-t pt-6">
+                    <h3 className="mb-4 text-lg font-semibold text-gray-900">要件定義</h3>
+                    <div className="space-y-6">
+                      {requirements.map((section: any, index: number) => (
+                        <div key={index} className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+                          <h4 className="mb-3 text-base font-semibold text-blue-700">{section.category}</h4>
+                          <ul className="space-y-2">
+                            {section.items.map((item: string, itemIndex: number) => (
+                              <li key={itemIndex} className="flex gap-2 text-sm text-gray-700">
+                                <span className="text-blue-500">•</span>
+                                <span className="flex-1 whitespace-pre-wrap leading-relaxed">{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+
+              // 古い配列形式
+              if (Array.isArray(requirements)) {
+                return (
+                  <div className="mt-8 border-t pt-6">
+                    <h3 className="mb-4 text-lg font-semibold text-gray-900">要件定義</h3>
+                    <div className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+                      <ul className="space-y-2">
+                        {requirements.map((req: any, index: number) => (
+                          <li key={index} className="flex gap-2 text-sm text-gray-700">
+                            <span className="text-blue-500">•</span>
+                            <span className="flex-1 whitespace-pre-wrap leading-relaxed">
+                              {typeof req === 'string' ? req : (req.title || req.heading || JSON.stringify(req))}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                );
+              }
+
+              // オブジェクト形式
+              if (typeof requirements === 'object') {
+                return (
+                  <div className="mt-8 border-t pt-6">
+                    <h3 className="mb-4 text-lg font-semibold text-gray-900">要件定義</h3>
+                    <div className="space-y-4">
+                      {Object.entries(requirements).map(([key, value]: [string, any]) => (
+                        <div key={key} className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+                          <h4 className="mb-2 font-medium text-gray-900">{key}</h4>
+                          <p className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">
+                            {typeof value === 'string' ? value : Array.isArray(value) ? value.join('\n') : JSON.stringify(value, null, 2)}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+
+              // その他
+              return (
+                <div className="mt-8 border-t pt-6">
+                  <h3 className="mb-4 text-lg font-semibold text-gray-900">要件定義</h3>
+                  <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+                    <p className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">
+                      {typeof requirements === 'string' ? requirements : JSON.stringify(requirements, null, 2)}
+                    </p>
+                  </div>
+                </div>
+              );
+            } catch (e) {
+              // JSONパースに失敗した場合は文字列として表示
+              return (
+                <div className="mt-8 border-t pt-6">
+                  <h3 className="mb-4 text-lg font-semibold text-gray-900">要件定義</h3>
+                  <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+                    <p className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">{project.requirements}</p>
+                  </div>
+                </div>
+              );
+            }
+          })()}
+
+          {/* 技術スタック */}
+          {(() => {
+            try {
+              // requirementsから技術情報を抽出
+              const requirements = project.requirements ? JSON.parse(project.requirements) : null;
+              let technologies: string[] = [];
+
+              // 新しい形式の要件定義から技術スタックを抽出
+              if (requirements && typeof requirements === 'object' && 'technologies' in requirements && Array.isArray(requirements.technologies)) {
+                technologies = requirements.technologies;
+              }
+              // 要件定義内の技術要件セクションから抽出
+              else if (Array.isArray(requirements)) {
+                const techSection = requirements.find((r: any) => r.category === '技術要件');
+                if (techSection?.items) {
+                  technologies = techSection.items;
+                }
+              }
+
+              if (technologies.length > 0) {
+                return (
+                  <div className="mt-8 border-t pt-6">
+                    <h3 className="mb-4 text-lg font-semibold text-gray-900">技術スタック</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {technologies.map((tech: string, index: number) => (
+                        <span
+                          key={index}
+                          className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+              return null;
+            } catch (e) {
+              return null;
+            }
+          })()}
+
           {/* クライアント情報 */}
           <div className="mt-8 border-t pt-6">
             <h3 className="text-lg font-semibold text-gray-900">クライアント情報</h3>
@@ -242,24 +381,42 @@ export default function ProjectDetailPage() {
           </div>
 
           {/* 契約書リンク */}
-          {project.contract_id && (
-            <div className="mt-8 border-t pt-6">
-              <h3 className="text-lg font-semibold text-gray-900">契約書</h3>
-              <p className="mt-2 text-sm text-gray-600">
-                この案件には契約書（案）が添付されています。契約内容を確認してから提案してください。
-              </p>
-              <Link
-                to={`/contracts/${project.contract_id}`}
-                className="mt-4 inline-block rounded-md bg-green-600 px-6 py-3 text-white hover:bg-green-700"
-              >
-                契約書を確認する
-              </Link>
-            </div>
-          )}
+          {(() => {
+            console.log('🔍 契約書リンク表示チェック:', {
+              'contract_id': project.contract_id,
+              'contract_id型': typeof project.contract_id,
+              '条件判定': !!project.contract_id
+            });
+            return project.contract_id ? (
+              <div className="mt-8 border-t pt-6">
+                <h3 className="text-lg font-semibold text-gray-900">契約書</h3>
+                <p className="mt-2 text-sm text-gray-600">
+                  この案件には契約書（案）が添付されています。契約内容を確認してから提案してください。
+                </p>
+                <Link
+                  to={`/contracts/${project.contract_id}`}
+                  className="mt-4 inline-block rounded-md bg-green-600 px-6 py-3 text-white hover:bg-green-700"
+                >
+                  契約書を確認する
+                </Link>
+              </div>
+            ) : null;
+          })()}
 
           {/* 提案送信セクション */}
           <div className="mt-8 border-t pt-6">
-            {!showProposalForm ? (
+            {/* 自分の案件には提案できない */}
+            {user.uid === project.client_id ? (
+              <div className="rounded-lg bg-gray-50 p-6 text-center">
+                <p className="text-gray-600">これはあなたが投稿した案件です。</p>
+                <Link
+                  to={`/my-projects/${projectId}/proposals`}
+                  className="mt-4 inline-block rounded-md bg-blue-600 px-6 py-3 text-white hover:bg-blue-700"
+                >
+                  受け取った提案を確認
+                </Link>
+              </div>
+            ) : !showProposalForm ? (
               <div>
                 <button
                   onClick={() => setShowProposalForm(true)}

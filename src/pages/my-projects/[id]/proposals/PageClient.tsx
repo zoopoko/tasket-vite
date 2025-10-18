@@ -11,8 +11,8 @@ interface Proposal {
   id: string;
   vendor_id: string;
   vendor_name: string;
-  budget: number;
-  timeline: number;
+  estimated_price: number;
+  estimated_duration: number;
   message: string;
   status: 'pending' | 'accepted' | 'rejected';
   created_at: string;
@@ -220,7 +220,7 @@ export default function ProjectProposalsPage() {
                       提案金額
                     </span>
                     <span className="text-lg font-bold text-blue-600">
-                      ¥{proposal.budget.toLocaleString()}
+                      ¥{proposal.estimated_price.toLocaleString()}
                     </span>
                   </div>
 
@@ -229,7 +229,7 @@ export default function ProjectProposalsPage() {
                       納期
                     </span>
                     <span className="text-sm text-gray-600">
-                      {proposal.timeline}日
+                      {proposal.estimated_duration}日
                     </span>
                   </div>
 
@@ -306,7 +306,7 @@ export default function ProjectProposalsPage() {
                     提案金額
                   </span>
                   <span className="mt-1 block text-2xl font-bold text-blue-600">
-                    ¥{selectedProposal.budget.toLocaleString()}
+                    ¥{selectedProposal.estimated_price.toLocaleString()}
                   </span>
                 </div>
 
@@ -315,7 +315,7 @@ export default function ProjectProposalsPage() {
                     納期
                   </span>
                   <span className="mt-1 block text-2xl font-bold text-gray-900">
-                    {selectedProposal.timeline}日
+                    {selectedProposal.estimated_duration}日
                   </span>
                 </div>
               </div>
@@ -335,7 +335,7 @@ export default function ProjectProposalsPage() {
                 </h4>
                 <p className="mt-2 text-xs text-blue-700">
                   承認後、着手金（30%）として
-                  ¥{Math.floor(selectedProposal.budget * 0.3).toLocaleString()}
+                  ¥{Math.floor(selectedProposal.estimated_price * 0.3).toLocaleString()}
                   がベンダーに支払われます。
                   <br />
                   残り70%は作業完了後に支払われます。
