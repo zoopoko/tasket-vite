@@ -9,6 +9,7 @@ type Requirements = {
   requirements: string[];
   technologies: string[];
   budget: number;
+  running_cost: number;
   deadline_days: number;
   background: string;
 };
@@ -93,6 +94,7 @@ function ReviewRequirementsPageContent() {
           title: requirements.title,
           description: requirements.description,
           budget: requirements.budget,
+          running_cost: requirements.running_cost,
           deadline_days: requirements.deadline_days,
           requirements: requirements.requirements,
           technologies: requirements.technologies,
@@ -313,7 +315,28 @@ function ReviewRequirementsPageContent() {
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <p className="mt-1 text-sm text-gray-500">
-            プラットフォーム手数料3.3%が別途かかります
+            初期開発費用（プラットフォーム手数料3.3%が別途かかります）
+          </p>
+        </div>
+
+        {/* ランニングコスト */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            月額ランニングコスト（円）
+          </label>
+          <input
+            type="number"
+            value={requirements.running_cost}
+            onChange={(e) =>
+              setRequirements({
+                ...requirements,
+                running_cost: parseInt(e.target.value) || 0,
+              })
+            }
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <p className="mt-1 text-sm text-gray-500">
+            サーバー費用、API利用料などの月額コスト（不要な場合は0円）
           </p>
         </div>
 
@@ -348,7 +371,7 @@ function ReviewRequirementsPageContent() {
         {/* アクション */}
         <div className="flex gap-4 pt-4">
           <button
-            onClick={() => navigate('/projects/new')}
+            onClick={() => navigate(`/projects/new?conversationId=${conversationId}`)}
             className="flex-1 px-4 py-3 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
           >
             キャンセル
